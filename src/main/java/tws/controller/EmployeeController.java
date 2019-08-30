@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tws.DTA.EmployeeDTO;
+import tws.Service.employeeService;
 import tws.entity.Employee;
 import tws.repository.EmployeeMapper;
 
@@ -17,11 +19,14 @@ public class EmployeeController {
 
     @Autowired
     private EmployeeMapper employeeMapper;
+    @Autowired
+    private employeeService employeeService;
 
     @GetMapping("")
     public ResponseEntity<List<Employee>> getAll() {
         return ResponseEntity.ok(employeeMapper.selectAll());
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Employee> selectOne(@PathVariable String id) {
@@ -49,5 +54,11 @@ public ResponseEntity<List<Employee>> insert(@RequestBody Employee employee) {
     public ResponseEntity<List<Employee>> deleteOne(@PathVariable String id) {
         employeeMapper.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<EmployeeDTO> getemployeeWith(@PathVariable String id) {
+       EmployeeDTO employeeDTO = employeeService.getemployeeWith(id);
+        return ResponseEntity.ok(employeeDTO);
     }
 }
